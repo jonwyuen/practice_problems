@@ -50,8 +50,8 @@ DoublyLinkedList.prototype.push = function(val) {
 };
 
 DoublyLinkedList.prototype.pop = function() {
-  let removedNode = this.tail;
   if (!this.length) return undefined;
+  let removedNode = this.tail;
   if (this.length === 1) {
     this.head = null;
     this.tail = null;
@@ -63,3 +63,78 @@ DoublyLinkedList.prototype.pop = function() {
   this.length--;
   return removedNode;
 };
+
+// unshift
+// This function should accept a value and add a node to the beginning of the DoublyLinkedList with the given value. It should return the DoublyLinkedList.
+
+// shift
+// This function should remove a node at the beginning of the DoublyLinkedList. It should return the node removed.
+
+DoublyLinkedList.prototype.unshift = function(val) {
+  let newNode = new Node(val);
+  if (!this.length) {
+    this.tail = newNode;
+  } else {
+    newNode.next = this.head;
+    this.head.prev = newNode;
+  }
+  this.head = newNode;
+  this.length++;
+  return this;
+};
+
+DoublyLinkedList.prototype.shift = function() {
+  if (!this.length) return undefined;
+  let removedNode = this.head;
+  if (this.length === 1) {
+    this.head = null;
+    this.tail = null;
+  } else {
+    this.head = this.head.next;
+    this.head.prev = null;
+  }
+  removedNode.next = null;
+  this.length--;
+  return removedNode;
+};
+
+// __get
+// This internal/helper function should find a node at a specified index in a DoublyLinkedList. It should return the found node.
+
+// set
+// This function should accept an index and a value and update the value of the node in the DoublyLinkedList at the index with the new value. It should return true if the node is updated successfully, or false if an invalid index is passed in.
+
+DoublyLinkedList.prototype.__get = function(idx) {
+  if (idx < 0 || idx >= this.length || !this.length) return null;
+  let curr;
+  if (idx <= Math.floor(this.length / 2)) {
+    curr = this.head;
+    for (let i = 0; i < idx; i++) {
+      curr = curr.next;
+    }
+  } else {
+    curr = this.tail;
+    for (let i = this.length - 1; i > idx; i--) {
+      curr = curr.prev;
+    }
+  }
+  return curr;
+};
+
+DoublyLinkedList.prototype.set = function(idx, val) {
+  let foundNode = this.__get(idx);
+  if (!foundNode) return false;
+  else {
+    foundNode.val = val;
+    return true;
+  }
+};
+
+// __insert
+// This internal/helper function should insert a node at a specified index in a DoublyLinkedList. It should return true if the index is valid, and false if the index is invalid (less than 0 or greater than the length of the list).
+
+// remove
+// This function should remove a node at a specified index in a DoublyLinkedList. It should return the removed node. if the index is valid, or undefined if the index is invalid.
+
+// reverse
+// This function should reverse all of the nodes in a DoublyLinkedList, and should return the list.
