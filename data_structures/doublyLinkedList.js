@@ -1,0 +1,5 @@
+// Advantage - O(1), constant time push, pop operations. Since a linked list is not stored contiguously, each node only takes up one memory slot at a time. Therefore, doing operations like push are always constant time (assuming you have a reference to the last element in the list, or the tail) because the entire list does not need to be copied over. Only the pointer of the last node in the list needs to be updated.
+
+// Disadvantage - O(n) element access. A linked list is not stored contiguously and we only have a reference to the head (and possibly the tail) node. That means that finding an element at a specific index requires iterating through the list until that node is reached. This is a O(n) operation, but it is a constant time operation in an array.
+
+// Since we have the ability to access a previous node in a doubly linked list, we can write a more efficient way to find nodes by either starting from the beginning or end and reduce the amount of traversing by half! The only tradeoff here is that a doubly linked list will consume more memory than a singly linked list because of the additional references to previous nodes.
