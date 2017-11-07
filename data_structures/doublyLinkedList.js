@@ -4,6 +4,14 @@
 
 // Since we have the ability to access a previous node in a doubly linked list, we can write a more efficient way to find nodes by either starting from the beginning or end and reduce the amount of traversing by half! The only tradeoff here is that a doubly linked list will consume more memory than a singly linked list because of the additional references to previous nodes.
 
+// access: O(n)
+// push: O(1)
+// unshift / shift:  O(1)
+// pop: O(1) (b/c have ref to prev)
+// find:  O(n)
+// insert in middle: O(n)
+// remove from middle: O(n)
+
 // Implement the following constructor functions:
 
 // Node
@@ -138,3 +146,113 @@ DoublyLinkedList.prototype.set = function(idx, val) {
 
 // reverse
 // This function should reverse all of the nodes in a DoublyLinkedList, and should return the list.
+
+DoublyLinkedList.prototype.__insert = function(idx, val) {
+  if (idx < 0 || idx > this.length) return false;
+  let newNode = new Node(val);
+  let prevNode;
+  if (idx === 0) {
+    if (!this.head) {
+      this.head = newNode;
+      this.tail = newNode;
+    } else {
+      newNode.next = this.head;
+      this.head.prev = newNode;
+      this.head = newNode;
+    }
+    this.length++;
+    return true;
+  }
+  if (idx === this.length) {
+    newNode.prev = this.tail;
+    this.tail.next = newNode;
+    this.tail = newNode;
+    this.length++;
+    return true;
+  }
+  if (idx <= Math.floor(this.length / 2)) {
+    prevNode = this.head;
+    for (let i = 0; i < idx - 1; i++) {
+      prevNode = prevNode.next;
+    }
+  } else {
+    prevNode = this.tail;
+    for (let i = this.length - 1; i > idx - 1; i--) {
+      prevNode = prevNode.prev;
+    }
+  }
+  newNode.prev = prevNode;
+  newNode.next = prevNode.next;
+  prevNode.next.prev = newNode;
+  prevNode.next = newNode;
+  this.length++;
+  return true;
+};
+
+DoublyLinkedList.prototype.remove = function(idx) {
+  if (idx < 0 || idx >= this.length || !this.length) return undefined;
+  let removedNode;
+  if (idx === 0) {
+    removedNode = this.head;
+    if (this.length === 1) {
+      this.head = null;
+      this.tail = null;
+    } else {
+      this.head = this.head.next;
+      removedNode.next = null;
+    }
+    this.length--;
+    return removedNode;
+  }
+  if (idx === this.length - 1) {
+    removedNode = this.tail;
+    this.tail = this.tail.prev;
+    removedNode.prev = null;
+    this.length--;
+    return removedNode;
+  }
+  if (idx <= Math.floor(this.length / 2)) {
+    removedNode = this.head;
+    for (let i = 0; i < idx; i++) {
+      removedNode = removedNode.next;
+    }
+  } else {
+    removedNode = this.tail;
+    for (let i = this.length - 1; i > idx; i--) {
+      removedNode = removedNode.prev;
+    }
+  }
+  removedNode.prev.next = removedNode.next;
+  removedNode.next.prev = removedNode.prev;
+  removedNode.prev = null;
+  removedNode.next = null;
+  this.length--;
+  return removedNode;
+};
+
+DoublyLinkedList.prototype.reverse = function() {
+  let curr = this.head;
+  while (curr) {
+    [curr.next, curr.prev] = [curr.prev, curr.next];
+    curr = curr.prev;
+  }
+  [this.head, this.tail] = [this.tail, this.head];
+  return this;
+};
+
+DoublyLinkedList.prototype.reverse = function() {
+  let curr = this.head;
+  let temp;
+  while (curr) {
+    temp = curr.next;
+    curr.next = curr.prev;
+    curr.prev = temp;
+    if (!temp) {
+      this.tail = this.head;
+      this.head = curr;
+    }
+    curr = temp;
+  }
+  return this;
+};
+
