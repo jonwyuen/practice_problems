@@ -340,9 +340,9 @@ BinarySearchTree.prototype.remove = function(val, node = this.root) {
   if (!foundNode) return undefined;
   if (foundNode === this.root) {
     let leftChild = foundNode.left;
-    let smallestChild = this.findSmallest(foundNode.right);
+    let smallestRightChild = this.findSmallest(foundNode.right);
     this.root = foundNode.right;
-    smallestChild.left = leftChild;
+    smallestRightChild.left = leftChild;
     return foundNode;
   }
   let foundParent = this.findParent(val);
@@ -361,17 +361,11 @@ BinarySearchTree.prototype.remove = function(val, node = this.root) {
   } else {
     //2 children
     let leftChild = foundNode.left;
-    let rightChild = foundNode.right;
-    let smallestChild = this.findSmallest(rightChild);
-    if (foundNode.value < foundParent.value) {
-      foundParent.left = rightChild;
-      if (!rightChild.left) rightChild.left = leftChild;
-      else smallestChild.left = leftChild;
-    } else {
-      foundParent.right = rightChild;
-      if (!rightChild.left) rightChild.left = leftChild;
-      else smallestChild.left = leftChild;
-    }
+    let smallestRightChild = this.findSmallest(foundNode.right);
+    if (foundNode.value < foundParent.value)
+      foundParent.left = smallestRightChild;
+    else foundParent.right = smallestRightChild;
+    smallestRightChild.left = leftChild;
   }
   return foundNode;
 };
@@ -404,7 +398,7 @@ BinarySearchTree.prototype.remove = function(value) {
 
   if (!isFound) return;
 
-  var childCount = this.__countChildren(current);
+  let childCount = this.__countChildren(current);
   if (childCount === 0) {
     if (parent && current.value > parent.value) {
       parent.right = null;
