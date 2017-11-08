@@ -21,9 +21,9 @@
 //     - it should have a first property initialized to null
 //     - it should have a last property initialized to null
 
-function Node(val, next = null) {
+function Node(val) {
   this.value = val;
-  this.next = next;
+  this.next = null;
 }
 
 function Queue() {
