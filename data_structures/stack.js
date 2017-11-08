@@ -1,7 +1,7 @@
 // Last In First Out (LIFO) data structure. So the last thing you placed on the stack is the first thing that you can take off of the stack.
 
-// pop - Take something off of the top of the stack
-// push - Add something to the top of the stack
+// pop O(1) - Take something off of the top of the stack
+// push O(1) - Add something to the top of the stack
 // size or length - How many elements are in the stack
 
 // Call Stack - keep track of functions that are being executed or have been executed
@@ -60,6 +60,6 @@ Stack.prototype.pop = function() {
 // peek - returns the first value in the stack
 
 Stack.prototype.peek = function() {
-  if (!this.first) return undefined;
+  if (!this.first) return null;
   return this.first.value;
 };
