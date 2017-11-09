@@ -313,14 +313,14 @@ BinarySearchTree.prototype.breadthFirstSearch = function() {
 // What is the successor? The leftmost child of the right child, if your current node has a right child. If the right child has no left child, the right child is your in-order successor. In other words, the successor is the unique node which can replace the node being removed and keep the subtree below the node being removed as a binary search tree.
 
 BinarySearchTree.prototype.find = function(val, node = this.root) {
-  if (!node) return undefined;
+  if (!node) return null;
   if (val === node.value) return node;
   if (val < node.value) return this.find(val, node.left);
   if (val > node.value) return this.find(val, node.right);
 };
 
 BinarySearchTree.prototype.findParent = function(val, parent = this.root) {
-  if (!parent) return undefined;
+  if (!parent || val === this.root.value) return null;
   if (
     (parent.left && val === parent.left.value) ||
     (parent.right && val === parent.right.value)
@@ -335,39 +335,30 @@ BinarySearchTree.prototype.findSmallest = function(node = this.root) {
   return node;
 };
 
-BinarySearchTree.prototype.remove = function(val, node = this.root) {
-  let foundNode = this.find(val);
-  if (!foundNode) return undefined;
-  if (foundNode === this.root) {
-    let leftChild = foundNode.left;
-    let smallestRightChild = this.findSmallest(foundNode.right);
-    this.root = foundNode.right;
-    smallestRightChild.left = leftChild;
-    return foundNode;
-  }
-  let foundParent = this.findParent(val);
+BinarySearchTree.prototype.remove = function(val) {
+  let node = this.find(val);
+  if (!node) return null;
+  let parent = this.findParent(val);
   //0 children
-  if (!foundNode.left && !foundNode.right) {
-    if (foundNode.value < foundParent.value) foundParent.left = null;
-    else foundParent.right = null;
-  } else if (
-    (foundNode.left && !foundNode.right) ||
-    (foundNode.right && !foundNode.left)
-  ) {
+  if (!node.left && !node.right) {
+    if (parent && node.value < parent.value) parent.left = null;
+    else if (parent && node.value > parent.value) parent.right = null;
+    else this.root = null;
+  } else if ((node.left && !node.right) || (node.right && !node.left)) {
     //1 children
-    let child = foundNode.left || foundNode.right;
-    if (foundNode.value < foundParent.value) foundParent.left = child;
-    else foundParent.right = child;
+    let child = node.left || node.right;
+    if (parent && node.value < parent.value) parent.left = child;
+    else if (parent && node.value > parent.value) parent.right = child;
+    else this.root = child;
   } else {
     //2 children
-    let leftChild = foundNode.left;
-    let smallestRightChild = this.findSmallest(foundNode.right);
-    if (foundNode.value < foundParent.value)
-      foundParent.left = smallestRightChild;
-    else foundParent.right = smallestRightChild;
-    smallestRightChild.left = leftChild;
+    let smallestRightChild = this.findSmallest(node.right);
+    smallestRightChild.left = node.left;
+    if (parent && node.value < parent.value) parent.left = node.right;
+    else if (parent && node.value > parent.value) parent.right = node.right;
+    else this.root = node.right;
   }
-  return foundNode;
+  return node;
 };
 
 BinarySearchTree.prototype.__countChildren = function(node) {
