@@ -130,6 +130,44 @@ MaxBinaryHeap.prototype.sinkDown = function(n) {
 };
 
 // maxHeapify
-// Given an array of numbers, implement a function called `maxHeapify` which converts an array of numbers into a max-heap. The tests will pass as long as each element in the array is less than its parent
+// Given an array of numbers, implement a function called `maxHeapify` which converts an array of numbers into a max-heap.
 
-function maxHeapify(arr) {}
+function maxHeapify(arr) {
+  for (let i = Math.floor(arr.length / 2); i >= 0; i--) {
+    innerHeapify(arr, i);
+  }
+  return arr;
+}
+
+function innerHeapify(arr, i) {
+  let p = i;
+  let lc = 2 * p + 1;
+  let rc = 2 * p + 2;
+  if (lc < arr.length && arr[lc] > arr[p]) p = lc;
+  if (rc < arr.length && arr[rc] > arr[p]) p = rc;
+  if (p !== i) {
+    [arr[i], arr[p]] = [arr[p], arr[i]];
+    innerHeapify(arr, p);
+  }
+}
+
+function maxHeapify(arr) {
+  let res = [];
+  for (let i = 0; i < arr.length; i++) {
+    maxH(arr[i]);
+  }
+  return res;
+
+  function maxH(val) {
+    res.push(val);
+    let n = res.length - 1;
+
+    while (true) {
+      let p = Math.floor((n - 1) / 2);
+      if (res[p] < res[n]) {
+        [res[n], res[p]] = [res[p], res[n]];
+        n = p;
+      } else return;
+    }
+  }
+}
