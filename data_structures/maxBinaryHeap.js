@@ -78,7 +78,6 @@ MaxBinaryHeap.prototype.extractMax = function() {
   let end = this.values.pop();
   if (this.values.length) {
     this.values[0] = end;
-    let p = 0;
 
     const findGreaterChild = p => {
       let lc = 2 * p + 1;
@@ -88,11 +87,13 @@ MaxBinaryHeap.prototype.extractMax = function() {
       return this.values[lc] > this.values[rc] ? lc : rc;
     };
 
-    let c = findGreaterChild(p);
-    while (this.values[p] && this.values[p] < this.values[c]) {
-      [this.values[p], this.values[c]] = [this.values[c], this.values[p]];
-      p = c;
-      c = findGreaterChild(p);
+    let p = 0;
+    while (true) {
+      let c = findGreaterChild(p);
+      if (this.values[p] < this.values[c]) {
+        [this.values[p], this.values[c]] = [this.values[c], this.values[p]];
+        p = c;
+      } else break;
     }
   }
   return removed;
