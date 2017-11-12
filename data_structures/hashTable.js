@@ -194,3 +194,66 @@ HashTable.prototype.get = function(key) {
   }
   return null;
 };
+
+// containsKey
+// This function should return true if the key specified exists in the hash table.
+
+// remove
+// This function should remove a value from the hash table.
+
+// keys
+// This function should return an array of all of the keys in the hash table.
+
+// values
+// This function should return an array of all of the values in the hash table.
+
+// separate chaining w/ hashnode
+HashTable.prototype.containsKey = function(key) {
+  var index = this.__hash(key);
+  if (this.get(key)) return true;
+  return false;
+};
+
+HashTable.prototype.remove = function(key) {
+  var index = this.__hash(key);
+  if (!this.keyMap[index]) return null;
+  var curr = this.keyMap[index];
+  if (curr.key === key) this.keyMap[index] = curr.next;
+  else {
+    while (curr.next) {
+      if (curr.next.key === key) {
+        curr.next = curr.next.next;
+        break;
+      }
+      curr = curr.next;
+    }
+  }
+};
+
+HashTable.prototype.keys = function() {
+  let keys = [];
+  for (let i = 0; i < this.keyMap.length; i++) {
+    if (this.keyMap[i]) {
+      let curr = this.keyMap[i];
+      while (curr) {
+        keys.push(curr.key);
+        curr = curr.next;
+      }
+    }
+  }
+  return keys;
+};
+
+HashTable.prototype.values = function() {
+  let values = [];
+  for (let i = 0; i < this.keyMap.length; i++) {
+    if (this.keyMap[i]) {
+      let curr = this.keyMap[i];
+      while (curr) {
+        values.push(curr.val);
+        curr = curr.next;
+      }
+    }
+  }
+  return values;
+};
