@@ -80,3 +80,136 @@ Graph.prototype.numEdges = function() {
   }
   return total / 2;
 };
+
+// depthFirstSearch - this function should return an array of nodes visited using DFS. You can do this iteratively (using a stack) or recursively, but note the order of the results will be different. The test cases should accommodate this.
+
+//recursive
+Graph.prototype.depthFirstSearch = function(n, visited = {}, res = []) {
+  if (visited[n]) return;
+  visited[n] = true;
+  res.push(n);
+  for (let val of this.adjacencyList[n]) {
+    this.depthFirstSearch(val, visited, res);
+  }
+  return res;
+};
+
+//iterative
+Graph.prototype.depthFirstSearch = function(n) {
+  let stack = [n];
+  let res = [];
+  let visited = { [n]: true };
+  let curr;
+  while (stack.length) {
+    curr = stack.pop();
+    res.push(curr);
+    if (this.adjacencyList[curr]) {
+      this.adjacencyList[curr].forEach(v => {
+        if (!visited[v]) {
+          stack.push(v);
+          visited[v] = true;
+        }
+      });
+    }
+  }
+  return res;
+};
+
+Graph.prototype.depthFirstSearch = function(start) {
+  var visited = {};
+  var result = [];
+  var adjacencyList = this.adjacencyList;
+
+  (function dfs(vertex) {
+    // base case
+    if (!vertex) {
+      return;
+    }
+    // visit node
+    visited[vertex] = true;
+    result.push(vertex);
+
+    // visit neighbors
+    adjacencyList[vertex].forEach(neighbor => {
+      if (!visited[neighbor]) {
+        return dfs(neighbor);
+      }
+    });
+  })(start);
+
+  return result;
+};
+
+Graph.prototype.depthFirstSearchIterative = function(start) {
+  // Create an empty stack
+  var stack = [start];
+  var result = [];
+  var visited = {};
+  var currentVertex;
+
+  // visit node
+  visited[start] = true;
+
+  // while there are still neighbors to visit
+  while (stack.length) {
+    currentVertex = stack.pop();
+    result.push(currentVertex);
+
+    // visit neighbors and push onto stack
+    this.adjacencyList[currentVertex].forEach(neighbor => {
+      if (!visited[neighbor]) {
+        visited[neighbor] = true;
+        stack.push(neighbor);
+      }
+    });
+  }
+  return result;
+};
+
+// breadthFirstSearch - this function should return an array of vertices visited using BFS.
+
+Graph.prototype.breadthFirstSearch = function(n) {
+  let queue = [n];
+  let res = [];
+  let visited = { [n]: true };
+  let curr;
+  while (queue.length) {
+    curr = queue.shift();
+    res.push(curr);
+    if (this.adjacencyList[curr]) {
+      this.adjacencyList[curr].forEach(v => {
+        if (!visited[v]) {
+          queue.push(v);
+          visited[v] = true;
+        }
+      });
+    }
+  }
+  return res;
+};
+
+Graph.prototype.breadthFirstSearch = function(start) {
+  // Create an empty queue
+  var queue = [start];
+  var result = [];
+  var visited = {};
+  var currentVertex;
+
+  // visit node
+  visited[start] = true;
+
+  // While there is still remaining vertices in queue
+  while (queue.length) {
+    currentVertex = queue.shift();
+    result.push(currentVertex);
+
+    // visit neighbors
+    this.adjacencyList[currentVertex].forEach(neighbor => {
+      if (!visited[neighbor]) {
+        visited[neighbor] = true;
+        queue.push(neighbor);
+      }
+    });
+  }
+  return result;
+};
