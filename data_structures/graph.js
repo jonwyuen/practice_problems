@@ -22,38 +22,61 @@ Graph.prototype.addEdge = function(v1, v2) {
   this.adjacencyList[v2].push(v1);
 };
 
-
 // removeEdge - this function should accept two nodes and remove the edge between them. It should modify the adjacency list to ensure that both values are not in each array for the two nodes which no longer contain the edge.
 
 // removeVertex - this function should remove the node in the array of nodes and also remove all edges that the removed node previously contained.
 
-
-
 Graph.prototype.removeEdge = function(vertex1, vertex2) {
-  let index1 = this.adjacencyList[vertex1] ? this.adjacencyList[vertex1].indexOf(vertex2) : -1;
-  let index2 = this.adjacencyList[vertex2] ? this.adjacencyList[vertex2].indexOf(vertex1) : -1;
-  if(index1 > - 1) this.adjacencyList[vertex1].splice(index1, 1);
-  if(index2 > - 1) this.adjacencyList[vertex2].splice(index2, 1);
+  let index1 = this.adjacencyList[vertex1]
+    ? this.adjacencyList[vertex1].indexOf(vertex2)
+    : -1;
+  let index2 = this.adjacencyList[vertex2]
+    ? this.adjacencyList[vertex2].indexOf(vertex1)
+    : -1;
+  if (index1 > -1) this.adjacencyList[vertex1].splice(index1, 1);
+  if (index2 > -1) this.adjacencyList[vertex2].splice(index2, 1);
 };
 
 Graph.prototype.removeVertex = function(vertex) {
   let index = this.vertices.indexOf(vertex);
-  if(index > -1) this.vertices.splice(index, 1);
+  if (index > -1) this.vertices.splice(index, 1);
 
-  while(this.adjacencyList[vertex].length) {
+  while (this.adjacencyList[vertex].length) {
     var adjacentVertex = this.adjacencyList[vertex].pop();
     this.removeEdge(adjacentVertex, vertex);
   }
-  
+
   delete this.adjacencyList[vertex];
 };
 
 Graph.prototype.removeVertex = function(vertex) {
-  this.vertices.splice(this.vertices.indexOf(vertex), 1)
-  delete this.adjacencyList[vertex];
-  for(let key in this.adjacencyList) {
-    if(this.adjacencyList[key].includes(vertex)){
-      this.adjacencyList[key].splice(this.adjacencyList[key].indexOf(vertex), 1);
+  let index = this.vertices.indexOf(vertex);
+  if (index > -1) this.vertices.splice(index, 1);
+  for (let key in this.adjacencyList) {
+    if (this.adjacencyList[key].includes(vertex)) {
+      this.adjacencyList[key].splice(
+        this.adjacencyList[key].indexOf(vertex),
+        1
+      );
     }
   }
+  delete this.adjacencyList[vertex];
+};
+
+// numEdges - returns the number of edges in the graph.
+
+Graph.prototype.numEdges = function() {
+  let total = 0;
+  for (let key in this.adjacencyList) {
+    total += this.adjacencyList[key].length;
+  }
+  return total / 2;
+};
+
+Graph.prototype.numEdges = function() {
+  let total = 0;
+  for (let i = 0; i < this.vertices.length; i++) {
+    total += this.adjacencyList[this.vertices[i]].length;
+  }
+  return total / 2;
 };
