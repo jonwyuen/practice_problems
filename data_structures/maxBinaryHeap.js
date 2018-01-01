@@ -39,7 +39,7 @@ MaxBinaryHeap.prototype.bubbleUp = function(i) {
   let element = this.values[i];
   let parentI = Math.floor((i - 1) / 2);
   let parent = this.values[parentI];
-  while (i > 0 || element > parent) {
+  while (i > 0 && element > parent) {
     [this.values[i], this.values[parentI]] = [
       this.values[parentI],
       this.values[i]
@@ -59,7 +59,7 @@ MaxBinaryHeap.prototype.insert = function(val) {
   this.values.push(val);
   let c = this.values.length - 1;
   let p = Math.floor((c - 1) / 2);
-  while (c > 0 || this.values[c] > this.values[p]) {
+  while (c > 0 && this.values[c] > this.values[p]) {
     [this.values[c], this.values[p]] = [this.values[p], this.values[c]];
     c = p;
     p = Math.floor((c - 1) / 2);
