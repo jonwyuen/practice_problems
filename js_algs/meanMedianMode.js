@@ -21,4 +21,17 @@ function getMode(arr) {
   let freq = {};
 
   arr.forEach(num => (freq[num] = (freq[num] || 0) + 1));
+
+  let maxFreq = 0;
+  let modes = [];
+  for (let num in freq) {
+    if (freq[num] > maxFreq) {
+      modes = [num];
+      maxFreq = freq[num];
+    } else if (freq[num] === maxFreq) {
+      modes.push(num);
+    }
+  }
+  if (modes.length === Object.keys(freq).length) modes = [];
+  return modes;
 }
