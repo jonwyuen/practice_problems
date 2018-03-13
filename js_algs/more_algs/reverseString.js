@@ -9,6 +9,10 @@ function reverse(str) {
 }
 
 function reverse(str) {
+  return str.split("").reduce((result, char) => char + result, "");
+}
+
+function reverse(str) {
   let result = "";
 
   for (let char of str) {
