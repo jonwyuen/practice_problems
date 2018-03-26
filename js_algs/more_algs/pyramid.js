@@ -11,8 +11,25 @@ function pyramid(n) {
   }
 }
 
-pyramid(3);
+function pyramid(n, row = 0, level = "") {
+  if (row === n) return;
 
+  if (level.length === 2 * n - 1) {
+    console.log(level);
+    return pyramid(n, ++row);
+  }
+
+  const mid = Math.floor((2 * n - 1) / 2);
+  let add;
+  // determine which col on by length of level
+  if (mid - row <= level.length && mid + row >= level.length) {
+    return pyramid(n, row, (level += "#"));
+  } else {
+    return pyramid(n, row, (level += " "));
+  }
+}
+
+pyramid(3);
 /*
 
   #  
