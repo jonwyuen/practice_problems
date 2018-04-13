@@ -137,8 +137,18 @@ class LinkedList {
 /*
 slow fast: assign to first node of list
 while loop iterate: slow moves one fast moves two
-if either of next two nodes not defined; fast at end slow at mdpt
+if either of next two nodes after fast not defined; fast at end slow at mdpt
 
 */
 
-function midpoint(list) {}
+function midpoint(list) {
+  let slow = list.getFirst();
+  let fast = list.getFirst();
+
+  while (fast.next && fast.next.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+
+  return slow;
+}
