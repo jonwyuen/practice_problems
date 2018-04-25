@@ -1,7 +1,26 @@
 class Events {
-  on(eventName, cb) {}
+  constructor() {
+    this.events = {};
+  }
 
-  trigger(eventName) {}
+  on(eventName, cb) {
+    if (this.events[eventName]) {
+      this.events[eventName].push(cb);
+    } else {
+      this.events[eventName] = [cb];
+    }
+  }
 
-  off(eventname) {}
+  trigger(eventName) {
+    if (this.events[eventName]) {
+      for (let cb of this.events[eventName]) {
+        cb();
+      }
+    }
+  }
+
+  off(eventName) {
+    // this.events[eventName] = [];
+    delete this.events[eventName];
+  }
 }
