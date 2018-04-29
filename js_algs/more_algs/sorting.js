@@ -35,3 +35,20 @@ function selectionSort(arr) {
 
   return arr;
 }
+
+function mergeSort(arr) {}
+
+function merge(left, right) {
+  let results = [];
+
+  while (left.length && right.length) {
+    if (left[0] < right[0]) results.push(left.shift());
+    else results.push(right.shift());
+  }
+
+  // if (left.length) results.push(...left);
+  // if (right.length) results.push(...right);
+  // return results;
+
+  return [...results, ...left, ...right];
+}
